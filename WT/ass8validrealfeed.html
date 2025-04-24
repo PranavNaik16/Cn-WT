@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Validation with Feedback</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    form {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .feedback {
+      font-size: 14px;
+      margin-top: -8px;
+      margin-bottom: 10px;
+      color: red;
+      display: none;
+    }
+    .valid {
+      border-color: green;
+    }
+    .invalid {
+      border-color: red;
+    }
+    button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <form id="contactForm">
+    <h2>Register</h2>
+    <input type="text" id="username" placeholder="Username" required>
+    <div id="userFeedback" class="feedback">Username must be at least 3 characters.</div>
+
+    <input type="email" id="email" placeholder="Email" required>
+    <div id="emailFeedback" class="feedback">Please enter a valid email address.</div>
+
+    <input type="password" id="password" placeholder="Password" required>
+    <div id="passFeedback" class="feedback">Password must be at least 6 characters.</div>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    const username = document.getElementById('username');
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const userFeedback = document.getElementById('userFeedback');
+    const emailFeedback = document.getElementById('emailFeedback');
+    const passFeedback = document.getElementById('passFeedback');
+
+    function validateUsername() {
+      if (username.value.length >= 3) {
+        username.classList.add('valid');
+        username.classList.remove('invalid');
+        userFeedback.style.display = 'none';
+      } else {
+        username.classList.add('invalid');
+        username.classList.remove('valid');
+        userFeedback.style.display = 'block';
+      }
+    }
+
+    function validateEmail() {
+      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (regex.test(email.value)) {
+        email.classList.add('valid');
+        email.classList.remove('invalid');
+        emailFeedback.style.display = 'none';
+      } else {
+        email.classList.add('invalid');
+        email.classList.remove('valid');
+        emailFeedback.style.display = 'block';
+      }
+    }
+
+    function validatePassword() {
+      if (password.value.length >= 6) {
+        password.classList.add('valid');
+        password.classList.remove('invalid');
+        passFeedback.style.display = 'none';
+      } else {
+        password.classList.add('invalid');
+        password.classList.remove('valid');
+        passFeedback.style.display = 'block';
+      }
+    }
+
+    username.addEventListener('input', validateUsername);
+    email.addEventListener('input', validateEmail);
+    password.addEventListener('input', validatePassword);
+
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      validateUsername();
+      validateEmail();
+      validatePassword();
+
+      if (!username.classList.contains('valid') ||
+          !email.classList.contains('valid') ||
+          !password.classList.contains('valid')) {
+        e.preventDefault();
+        alert('Please fix the errors in the form before submitting.');
+      }
+    });
+  </script>
+</body>
+</html>
